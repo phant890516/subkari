@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASHBOARD - アカウント管理</title>
+    <style>
+/* === Common Variables (画像の色に合わせた調整) === */
+:root {
+    --color-main: #696969; /* サイドバーの濃いグレー */
+    --color-active-bg: #e0e0e0; /* サイドバーのアクティブ背景色 */
+    --color-text: #333;
+    --color-white: #fff;
+    --color-sidebar-link: #ffffff;
+    --color-dashboard-bg: #f9f9f9;
+    --color-top-bar-bg: #fff; /* トップバーの背景色 */
+    --color-border: #e0e0e0;
+    --color-link: #4a9eff;
+    --color-button-bg: #f0f0f0; /* ボタンの背景色（推定） */
+    --color-red-icon: #dc3545; /* 警告アイコンの朱色 */
+}
+
+/* === Base & Layout Styles === */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif; 
+}
+body { 
+    background-color: var(--color-dashboard-bg); 
+    color: var(--color-text); 
+    line-height: 1.5; 
+    font-size: 14px; 
+}
+a { text-decoration: none; color: inherit; }
+.app-container { display: flex; min-height: 100vh; }
+
+/* === Sidebar (アカウント管理アクティブ) === */
+.sidebar { 
+    width: 250px; 
+    flex-shrink: 0; 
+    background-color: var(--color-main); 
+}
+.sidebar-header { 
+    background-color: var(--color-main); 
+    color: var(--color-white); 
+    padding: 20px; 
+    font-size: 20px; 
+    height: 70px; 
+    display: flex; 
+    align-items: center; 
+    font-weight: bold; 
+} 
+.sidebar-nav ul { list-style: none; padding: 0; }
+.sidebar-nav li a { 
+    display: flex; 
+    align-items: center; 
+    padding: 12px 20px; 
+    color: var(--color-sidebar-link); 
+    border-bottom: 1px solid #7a7a7a; 
+    font-size: 14px;
+}
+/* アカウント管理にアクティブなスタイルを適用 */
+.sidebar-nav li:nth-child(2) a { 
+    background-color: var(--color-active-bg); 
+    color: var(--color-text); 
+    font-weight: bold; 
+} 
+.sidebar-nav .notification { 
+    background-color: #dc3545; 
+    color: var(--color-white); 
+    border-radius: 50%; 
+    width: 20px; 
+    height: 20px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    font-size: 11px; 
+    margin-left: auto; 
+    margin-right: 5px; 
+}
+
+/* === Main Content Area === */
+.main-content-area { flex-grow: 1; display: flex; flex-direction: column; background-color: var(--color-white); }
+.top-bar { 
+    display: flex; 
+    justify-content: flex-end; 
+    align-items: center; 
+    padding: 0 30px; 
+    background-color: var(--color-top-bar-bg); 
+    border-bottom: 1px solid var(--color-border); 
+    height: 70px; 
+}
+.header-right { display: flex; align-items: center; }
+.user-info { display: flex; align-items: center; gap: 10px; color: var(--color-text); font-size: 14px; }
+.user-name { font-weight: normal; margin-right: 5px; color: var(--color-text); }
+.user-avatar { 
+    width: 35px; 
+    height: 35px; 
+    border-radius: 50%; 
+    background-color: #d2d2d2; 
+    border: 1px solid #ccc; 
+    margin-left: 5px; 
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.logout-link { color: var(--color-link); font-size: 14px; cursor: pointer; font-weight: normal; margin-left: 15px; }
+
+/* === Page Content (アカウント管理固有) === */
+.page-content { 
+    padding: 50px 70px; 
+    flex-grow: 1; 
+    background-color: var(--color-white); 
+}
+
+.page-title { 
+    font-size: 24px; 
+    font-weight: bold;
+    margin-bottom: 40px; 
+    color: var(--color-text);
+}
+
+.content-flex-container {
+    display: flex;
+    gap: 100px; /* 詳細とパスワードフォームの間のスペース */
+    width: 100%;
+}
+
+/* --- アカウント詳細セクション --- */
+.detail-section {
+    flex-basis: 40%;
+    max-width: 400px;
+    position: relative;
+}
+.details-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+.details-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 14px;
+}
+.details-key {
+    flex-basis: 100px;
+    font-weight: normal;
+    color: var(--color-text);
+}
+.details-value {
+    flex-grow: 1;
+    font-weight: normal;
+    color: var(--color-text);
+}
+/* 編集アイコン（画像に存在する） */
+.edit-icon-box {
+    position: absolute;
+    top: -50px; /* タイトル横の位置に調整 */
+    right: -20px;
+    color: var(--color-red-icon);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.save-button {
+    background-color: var(--color-button-bg);
+    color: var(--color-text);
+    border: 1px solid #999;
+    padding: 8px 30px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+/* --- パスワード変更セクション --- */
+.password-section {
+    flex-basis: 60%;
+    max-width: 450px;
+}
+.password-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+.password-form-group {
+    margin-bottom: 20px;
+}
+.password-label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
+}
+.password-input {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 300px;
+}
+.password-submit-button {
+    background-color: var(--color-button-bg);
+    color: var(--color-text);
+    border: 1px solid #999;
+    padding: 8px 30px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">DASHBOARD</div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#">ダッシュボード</a></li>
+                    <li><a href="#" class="active">アカウント管理</a></li>
+                    <li><a href="#">商品管理</a></li>
+                    <li><a href="#">通報一覧</a></li>
+                    <li><a href="#">お問い合わせ <span class="notification">1</span></a></li>
+                    <li><a href="#">通知</a></li>
+                    <li><a href="#">コンテンツ編集</a></li>
+                    <li><a href="#">管理者アカウント作成</a></li>
+                    <li><a href="#">管理者アカウント管理</a></li>
+                    <li><a href="#">ログ閲覧</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="main-content-area">
+            <header class="top-bar">
+                <div class="header-right">
+                    <div class="user-info">
+                        <span class="user-name">中村 徳倉</span>
+                        <div class="user-avatar"></div>
+                    </div>
+                    <a href="#" class="logout-link">ログアウト</a>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h1 class="page-title">アカウント管理</h1>
+
+                <div class="content-flex-container">
+                    <div class="detail-section">
+                        <div class="edit-icon-box">📝</div>
+                        
+                        <div class="details-list">
+                            
+                            <div class="details-row">
+                                <div class="details-key">ID</div>
+                                <div class="details-value">ad001</div>
+                            </div>
+                            
+                            <div class="details-row">
+                                <div class="details-key">氏名</div>
+                                <div class="details-value">春 太郎</div>
+                            </div>
+                            
+                            <div class="details-row">
+                                <div class="details-key">権限レベル</div>
+                                <div class="details-value">オペレータ</div>
+                            </div>
+                            
+                            <div class="details-row">
+                                <div class="details-key">作成日時</div>
+                                <div class="details-value">2019-08-07 15:03</div>
+                            </div>
+                            
+                            <div class="details-row">
+                                <div class="details-key">最終ログイン</div>
+                                <div class="details-value">2025-08-07 19:03</div>
+                            </div>
+                            
+                            <div class="details-row">
+                                <div class="details-key">パスワード</div>
+                                <div class="details-value">hogehogeHoGe</div>
+                            </div>
+                        </div>
+
+                        <button class="save-button">変更を保存</button>
+                    </div>
+
+                    <div class="password-section">
+                        <h2 class="password-title">パスワード変更</h2>
+                        <form id="password-change-form">
+                            <div class="password-form-group">
+                                <label for="new-password" class="password-label">新しいパスワードを入力</label>
+                                <input type="password" id="new-password" class="password-input">
+                            </div>
+                            <div class="password-form-group">
+                                <label for="confirm-password" class="password-label">パスワード（確認用）</label>
+                                <input type="password" id="confirm-password" class="password-input">
+                            </div>
+                            <button type="submit" class="password-submit-button">パスワード変更</button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ログアウト機能
+            const logoutLink = document.querySelector('.logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('ログアウト処理を実行...');
+                    alert('ログアウトします');
+                });
+            }
+
+            // 変更を保存ボタンのダミー機能
+            document.querySelector('.save-button').addEventListener('click', () => {
+                console.log('アカウント詳細の変更を保存します');
+                alert('アカウント詳細の変更を保存しました');
+            });
+
+            // パスワード変更フォームのダミー機能
+            document.getElementById('password-change-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                console.log('パスワード変更処理を実行...');
+                alert('パスワードを変更しました');
+            });
+            
+            // 編集アイコンのダミー機能
+            document.querySelector('.edit-icon-box').addEventListener('click', () => {
+                alert('編集アイコンがクリックされました。氏名などの編集モーダルやフォームを開きます。');
+            });
+        });
+    </script>
+</body>
+</html>

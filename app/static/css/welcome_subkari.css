@@ -1,0 +1,329 @@
+/* === カスタムプロパティ === */
+:root {
+  --color-bg: #fff;
+  --color-text: #333;
+  --color-text-muted: #666;
+  --color-cta-bg-primary: #333;
+  --color-cta-text-primary: #fff;
+  --color-cta-bg-secondary: #fff;
+  --color-cta-border-secondary: #333;
+  --color-border: #eee;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 20px;
+  --space-lg: 40px;
+  --space-xl: 40px; 
+  --space-xxl: 90px;
+  --font-xs: 12px;
+  --font-sm: 18px; 
+  --font-md: 17px;
+  --font-lg: 24px; 
+  --font-xl: 40px; 
+  --font-xxl: 60px; 
+  --radius-sm: 20px;
+  --radius-md: 25px; /* 以前の25pxから変更なし */
+  --radius-lg: 30px; /* 💡 ボタンの角丸用に新設 */
+  --radius-circle: 50%;
+}
+
+/* === リセット === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Yu Gothic', 'Hiragino Kaku Gothic Pro', sans-serif;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+/* === ヒーロー / イントロ === */
+.intro-section {
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+}
+
+.intro-section h1, .intro-section h2 {
+  font-size: 36px;
+  letter-spacing: 3px;
+  margin-bottom: var(--space-md);
+}
+
+.intro-section p {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xl);
+}
+
+/* === ブランドグリッド === */
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-xxl) var(--space-lg);
+  padding: var(--space-xxl) 0;
+  margin: var(--space-lg) auto;
+  max-width: 80%;
+  border-top: 1px solid var(--color-border);
+  /* border-bottom: 1px solid var(--color-border); */
+}
+
+/* === カテゴリー検索 (Brands Grids) === */
+.brands-grids {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-xxl) var(--space-xl); 
+  padding: var(--space-xxl) 0;
+  margin: var(--space-lg) auto;
+  max-width: 80%; 
+  /* border-top: 1px solid var(--color-border); */
+  /* border-bottom: 1px solid var(--color-border); */
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.category-item img {
+    width: 150px; 
+    height: 150px; 
+    object-fit: contain;
+    margin-bottom: var(--space-sm);
+}
+
+.category-item p {
+    font-size: var(--font-lg); 
+    font-weight: 600;
+}
+
+.brands-grid img {
+  width: 100%;
+  max-height: 100px;
+  object-fit: contain;
+  padding: 0 var(--space-md);
+}
+
+/* === 4つのサービス (Features) === */
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-xl) var(--space-lg);
+  margin: var(--space-xl) auto;
+  max-width: 900px;
+}
+
+.feature {
+  text-align: center;
+  padding: var(--space-lg);
+  border-radius: 8px;
+}
+
+.feature h3 {
+  font-size: var(--font-md);
+  margin-bottom: var(--space-xs);
+  font-weight: 500;
+  line-height: 1.5;
+  width: auto; 
+}
+
+.feature p {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  width: auto;
+}
+
+.feature-icon {
+  display: inline-block;
+}
+
+.feature-icon img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: var(--space-md);
+}
+
+/* === ブランド探索 === */
+.explore-group {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.brand-explore-title {
+  font-size: var(--font-sm);
+  font-weight: 500;
+  margin: var(--space-md) 0 var(--space-sm);
+}
+
+.brands-grid-with-text {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 80px 10px;
+  max-width: 90%;
+  margin: 0 auto var(--space-xl);
+  justify-items: center;
+}
+
+.brand-item img {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-circle);
+  object-fit: contain;
+  margin-bottom: 5px;
+}
+
+/* === SNSセクション (共通スタイル) === */
+.sns-section-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 120px;
+  margin: 350px 0;
+}
+
+.sns-title {
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.sns-description {
+  font-size: var(--font-sm); 
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 20px 0;
+}
+
+.sns-icon-area {
+    display: flex; 
+    gap: var(--space-lg);
+    align-items: center; 
+}
+
+/* 上側のセクション: 最新の人気コーデ (sns-section-content:nth-child(1)) */
+.sns-section-content:nth-child(1) .sns-title {
+    font-size: var(--font-xxl); 
+}
+
+.sns-section-content:nth-child(1) .sns-icon-area img {
+    object-fit: contain;
+}
+
+/* 下側のセクション: 公式SNS (sns-section-content:nth-child(2)) */
+.sns-section-content:nth-child(2) .sns-title {
+    font-size: var(--font-xl);
+}
+
+.sns-section-content:nth-child(2) .sns-icon-area img {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+}
+
+
+/* === CTAセクション === */
+.cta-section {
+  text-align: center;
+  /* 💡 修正: 上下paddingを広く */
+  padding: 280px 30px; 
+}
+
+/* 💡 修正: タイトルを画像2に合わせて調整 */
+.cta-section h2 {
+  font-size: var(--font-xl); /* 40px */
+  margin-bottom: var(--space-md); /* 画像2に合わせて調整 */
+  line-height: 1.4;
+}
+
+/* 💡 修正: 説明文を画像2に合わせて調整 */
+.cta-section p {
+  font-size: var(--font-sm); /* 18px */
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-lg); /* ボタンとの間隔を調整 */
+  line-height: 1.8;
+}
+
+/* 💡 修正: ボタンコンテナを縦並びにする */
+.cta-buttons {
+  display: flex;
+  flex-direction: column; /* 縦並び */
+  gap: var(--space-md); /* ボタン間の間隔 */
+  justify-content: center;
+  align-items: center; /* 中央寄せ */
+}
+
+/* 💡 修正: ボタンのスタイル調整 */
+.cta-btn {
+  padding: 15px 50px; /* 縦横のパディングを調整 */
+  border-radius: var(--radius-lg); /* 💡 角丸を大きく (30px) */
+  font-size: var(--font-sm); /* 💡 文字サイズを少し大きく (18px) */
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  border: none;
+  width: 280px; /* 💡 ボタンの幅を固定 (画像2を参考に) */
+  max-width: 90%; /* レスポンシブ対応 */
+}
+
+.cta-btn.primary {
+  background: var(--color-cta-bg-primary); /* #333 */
+  color: var(--color-cta-text-primary); /* #fff */
+}
+
+.cta-btn.secondary {
+  background: var(--color-cta-bg-secondary); /* #fff */
+  border: 2px solid var(--color-cta-border-secondary); /* #333 */
+  color: var(--color-cta-border-secondary); /* #333 */
+}
+
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* === レスポンシブ === */
+@media (max-width: 1024px) {
+  .products-container { grid-template-columns: repeat(4, 1fr); }
+  .content-wrapper { gap: 150px; }
+}
+
+@media (max-width: 768px) {
+  .features { grid-template-columns: 1fr; max-width: 90%; gap: var(--space-lg); }
+  .brands-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 20px; }
+  .brands-grid-with-text { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+  
+  /* レスポンシブ時のカテゴリー検索の調整 */
+  .brands-grids { 
+      grid-template-columns: repeat(2, 1fr); 
+      max-width: 90%;
+      gap: var(--space-lg) var(--space-md); 
+  }
+  .category-item img {
+      width: 100px;
+      height: 100px;
+  }
+  .category-item p {
+      font-size: var(--font-md);
+  }
+  
+  /* レスポンシブ時のSNSセクションの調整 */
+  .sns-section-content { 
+      flex-direction: column; 
+      margin: 100px 0; 
+      gap: 60px; 
+  }
+  /* レスポンシブ時のCTAセクションの調整 */
+  .cta-section h2 {
+      font-size: var(--font-xxl); /* 小さな画面では大きく見せる */
+  }
+  .cta-btn {
+      width: 90%; /* 全幅に近く */
+  }
+}
+
+@media (max-width: 480px) {
+  .brands-grid, .brands-grid-with-text { grid-template-columns: 1fr; gap: 20px; }
+}

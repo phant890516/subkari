@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ダッシュボード - コンテンツ編集 - SUBKARI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+            background: #f5f5f5;
+        }
+
+        header {
+            background: #808080;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            color: #fff;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-name {
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .user-icon {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logout-link {
+            color: #4a9eff;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            width: 200px;
+            background: #9a9a9a;
+            padding: 0;
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 1px solid #888;
+            transition: background 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-item:hover {
+            background: #888;
+        }
+
+        .menu-item.active {
+            background: #777;
+        }
+
+        .menu-badge {
+            background: #fff;
+            color: #666;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        .content-area {
+            flex: 1;
+            background: #fff;
+        }
+
+        .content-header {
+            padding: 40px 50px 30px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .content-title {
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .editor-container {
+            display: flex;
+            height: calc(100vh - 200px);
+        }
+
+        .left-panel {
+            width: 200px;
+            background: #f8f8f8;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+        }
+
+        .panel-item {
+            padding: 12px 15px;
+            font-size: 13px;
+            cursor: pointer;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .panel-item:hover {
+            background: #e8e8e8;
+        }
+
+        .panel-item.active {
+            background: #ddd;
+        }
+
+        .editor-main {
+            flex: 1;
+            padding: 40px 50px;
+            overflow-y: auto;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .document-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .preview-btn {
+            padding: 10px 30px;
+            border: 2px solid #333;
+            background: #fff;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .preview-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .document-content {
+            line-height: 2;
+            font-size: 14px;
+        }
+
+        .document-content h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 30px 0 15px;
+        }
+
+        .document-content p {
+            margin-bottom: 15px;
+        }
+
+        .document-content ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .document-content li {
+            margin-bottom: 10px;
+        }
+
+        .document-content ul {
+            margin-left: 40px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -200px;
+                top: 70px;
+                height: calc(100vh - 70px);
+                z-index: 1000;
+                transition: left 0.3s;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .left-panel {
+                display: none;
+            }
+
+            .editor-main {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">DASHBOARD</div>
+        <div class="user-info">
+            <span class="user-name">中村 徳倉</span>
+            <div class="user-icon">👤</div>
+            <a href="login.html" class="logout-link">ログアウト</a>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="menu-item">ダッシュボード</div>
+            <div class="menu-item">アカウント管理</div>
+            <div class="menu-item">商品管理</div>
+            <div class="menu-item">通報</div>
+            <div class="menu-item">
+                お問い合わせ
+                <span class="menu-badge">1</span>
+            </div>
+            <div class="menu-item">通知</div>
+            <div class="menu-item active">コンテンツ編集</div>
+            <div class="menu-item">管理者アカウント作成</div>
+            <div class="menu-item">管理者アカウント管理</div>
+            <div class="menu-item">ログ閲覧</div>
+        </aside>
+
+        <div class="content-area">
+            <div class="content-header">
+                <h1 class="content-title">コンテンツ編集</h1>
+            </div>
+
+            <div class="editor-container">
+                <div class="left-panel">
+                    <div class="panel-item active">利用規約</div>
+                    <div class="panel-item">FAQ</div>
+                    <div class="panel-item">プライバシーポリシー</div>
+                    <div class="panel-item">ヘルプ</div>
+                </div>
+
+                <div class="editor-main">
+                    <div class="editor-header">
+                        <h2 class="document-title">利用規約</h2>
+                        <button class="preview-btn">プレビュー</button>
+                    </div>
+
+                    <div class="document-content">
+                        <p>本利用規約（以下「本規約」といいます。）は、**[サービス名]**（以下「本サービス」といいます。）<br>
+                        の利用条件を定めるものです。<br>
+                        本サービスを利用するすべての方（以下「ユーザー」といいます。）は、本規約に同意のうえでご利用ください。</p>
+
+                        <h2>第1条（適用） </h2>
+                        <ol>
+                            <li>本規約は、ユーザーと運営者（以下「当社」といいます。）との間の本サービスの利用に関わる一切の関係に適用されます。</li>
+                            <li>当社は、本規約のほか、ガイドライン・ポリシー等を定める場合があります。これらは本規約の一部を構成します。</li>
+                        </ol>
+
+                        <h2>第2条（会員登録）</h2>
+                        <ol>
+                            <li>本サービスの利用を希望する者は、本規約に同意し、当社所定の方法により登録を申請するものとします。</li>
+                            <li>登録希望者が以下の事由に該当すると当社が判断した場合、登録を承認しないことがあります。
+                                <ul>
+                                    <li>虚偽の情報を登録した場合</li>
+                                    <li>過去に規約違反等により利用停止となった場合</li>
+                                    <li>その他、当社が不適当と判断した場合</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <h2>第3条（アカウント管理）</h2>
+                        <ol>
+                            <li>ユーザーは、自己の責任においてアカウントを管理するものとします。</li>
+                            <li>アカウントを第三者に譲渡、貸与することはできません。</li>
+                        </ol>
+
+                        <h2>第4条（サービス内容）</h2>
+                        <ol>
+                            <li>本サービスは、ユーザー間で衣服をレンタル・貸出するためのプラットフォームを提供するものです。</li>
+                            <li>当社は、取引当事者ではなく、ユーザー間の契約・トラブル等について責任を負いません。</li>
+                        </ol>
+
+                        <h2>第5条（禁止事項）</h2>
+                        <ol>
+                            <li>ユーザーは、以下の行為をしてはなりません。
+                                <ul>
+                                    <li>法令または公序良俗に違反する行為</li>
+                                    <li>他のユーザーまたは第三者の権利を侵害する行為</li>
+                                    <li>虚偽の情報を登録または提供する行為</li>
+                                    <li>レンタル品の無断転貸・転売・改変</li>
+                                    <li>当社のサービス運営を妨害する行為</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <h2>第6条（レンタル取引）</h2>
+                        <ol>
+                            <li>ユーザーは、出品者と利用者の間でレンタル契約を締結するものとし、契約条件（レンタル料、期間、返却方法等）は当事者間で合意するものとします。</li>
+                            <li>レンタル品の紛失・破損が発生した場合、当事者間で誠実に解決を図るものとします。</li>
+                            <li>当社は取引の内容、品質、履行について一切の責任を負いません。</li>
+                        </ol>
+
+                        <h2>第7条（料金・支払い）</h2>
+                        <ol>
+                            <li>本サービス利用に際し、ユーザーは当社所定の手数料を支払うものとします。</li>
+                            <li>支払い方法・返金条件は別途定めます。</li>
+                        </ol>
+
+                        <h2>第8条（延滞・未返却）</h2>
+                        <ol>
+                            <li>借り手は、合意された返却期限を遵守するものとします。</li>
+                            <li>返却が遅延した場合、出品者は延滞料金を請求できるものとします。</li>
+                            <li>未返却が発生した場合、当社はアカウント停止や法的措置の補助を行う場合があります。</li>
+                        </ol>
+
+                        <h2>第9条（免責事項）</h2>
+                        <ol>
+                            <li>当社は、サービスに関してユーザー間で生じた損害・トラブルについて一切の責任を負いません。</li>
+                            <li>天災・通信障害・システム不具合等によりサービス提供が困難となった場合も、当社は責任を負いません。</li>
+                        </ol>
+
+                        <h2>第10条（退会）</h2>
+                        <ol>
+                            <li>ユーザーは、当社所定の手続きによりいつでも退会できます。ただし、未完了の取引がある場合はその履行を優先するものとします。</li>
+                        </ol>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // メニュー切り替え
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // パネル切り替え
+        document.querySelectorAll('.panel-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.panel-item').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                
+                const title = this.textContent;
+                document.querySelector('.document-title').textContent = title;
+            });
+        });
+
+        // プレビューボタン
+        document.querySelector('.preview-btn').addEventListener('click', function() {
+            alert('プレビュー表示');
+        });
+
+        // モバイル用メニュートグル
+        if (window.innerWidth <= 768) {
+            const menuToggle = document.createElement('div');
+            menuToggle.style.cssText = 'position: fixed; top: 80px; left: 10px; z-index: 1001; background: #333; color: #fff; padding: 10px; cursor: pointer; border-radius: 4px;';
+            menuToggle.textContent = '☰ メニュー';
+            document.body.appendChild(menuToggle);
+
+            menuToggle.addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('open');
+            });
+        }
+    </script>
+</body>
+</html>
