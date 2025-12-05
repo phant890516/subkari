@@ -6,9 +6,12 @@ from flask import Flask,make_response, render_template,request,session
 from config import Config
 import os
 
-if not os.path.exists("ca.pem"):
+pem_env = os.environ.get("AIVEN_CA_PEM")
+if pem_env:
     with open("ca.pem", "w") as f:
-        f.write(os.environ.get("AIVEN_CA_PEM"))
+        f.write(pem_env)
+else:
+    print("⚠️ AIVEN_CA_PEM not found in environment variables!")
 
 def create_app():
     # Flaskアプリケーションのインスタンスを作成
