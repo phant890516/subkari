@@ -1195,10 +1195,13 @@ def rental_complete():
 # DB接続設定
 def connect_db():
     con = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        passwd='',
-        db='db_subkari'
+        host=os.environ.get('AIVEN_DB_HOST'),
+        user=os.environ.get('AIVEN_DB_USER'),
+        passwd=os.environ.get('AIVEN_DB_PASSWORD'),
+        db='db_subkari',
+        port=os.environ.get('AIVEN_DB_PORT'),
+        ssl_ca='ca.pem',
+        ssl_disabled=False
     )
     return con
 
