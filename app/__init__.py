@@ -4,6 +4,11 @@
 # ==========================================================
 from flask import Flask,make_response, render_template,request,session
 from config import Config
+import os
+
+if not os.path.exists("ca.pem"):
+    with open("ca.pem", "w") as f:
+        f.write(os.environ.get("AIVEN_CA_PEM"))
 
 def create_app():
     # Flaskアプリケーションのインスタンスを作成
